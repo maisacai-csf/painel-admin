@@ -6,12 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="admin.css" />
 </head>
-<script type="module" src="logout.js"></script>
-<script type="module" src="protect.js"></script>
-<script type="module" src="dashboard.js"></script>
+
 <body>
 
-  <!-- BOTÃO MOBILE -->
+  <!-- TOPBAR MOBILE -->
   <header class="topbar">
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
     <span>Dashboard</span>
@@ -22,13 +20,13 @@
     <h2>Admin</h2>
 
     <nav>
-      <a class="active">Dashboard</a>
-      <a>Produtos</a>
-      <a>Pedidos</a>
-      <a>Configurações</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="produtos.html">Produtos</a>
+      <a href="pedidos.html">Pedidos</a>
+      <a href="config.html">Configurações</a>
     </nav>
 
-    <button class="logout">Sair</button>
+    <button class="logout" id="logoutBtn">Sair</button>
   </aside>
 
   <!-- OVERLAY MOBILE -->
@@ -50,7 +48,7 @@
 
         <div class="card">
           <span>Faturamento</span>
-          <strong>R$ 356,00</strong>
+          <strong>R$ 0,00</strong>
           <small>Total do dia</small>
         </div>
 
@@ -62,7 +60,7 @@
 
         <div class="card">
           <span>Acompanhamentos</span>
-          <strong>15</strong>
+          <strong>0</strong>
           <small>Adicionais ativos</small>
         </div>
       </div>
@@ -70,10 +68,15 @@
     </div>
   </main>
 
+  <!-- SCRIPTS -->
+  <script type="module" src="protect.js"></script>
+  <script type="module" src="dashboard.js"></script>
+  <script type="module" src="logout.js"></script>
+
   <script>
     function toggleMenu() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
+      document.getElementById("sidebar").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("show");
     }
   </script>
 
