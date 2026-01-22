@@ -1,59 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel Admin</title>
-  <link rel="stylesheet" href="admin.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<!-- PROTEÇÃO -->
-<script type="module" src="protect.js"></script>
+<header class="header">
+  <h1>Painel Admin</h1>
+  <p>Gerencie seu cardápio</p>
+</header>
 
-<div class="app">
+<div class="container">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>AÇAÍ ADM</h2>
+  <div class="card">
+    <h3>Produtos</h3>
+    <p>Gerenciar copos e preços</p>
+    <button>Entrar</button>
+  </div>
 
-    <nav>
-      <a href="#" class="active">Dashboard</a>
-      <a href="#">Produtos</a>
-      <a href="#">Pedidos</a>
-      <a href="#">Acompanhamentos</a>
-    </nav>
+  <div class="card">
+    <h3>Acompanhamentos</h3>
+    <p>Adicionar e remover adicionais</p>
+    <button>Entrar</button>
+  </div>
 
-    <button id="logout">Sair</button>
-  </aside>
+  <div class="card">
+    <h3>Pedidos</h3>
+    <p>Visualizar pedidos recebidos</p>
+    <button>Entrar</button>
+  </div>
 
-  <!-- CONTEÚDO -->
-  <main class="content">
-
-    <!-- TOPO -->
-    <header class="topbar">
-      <h1>Painel Administrativo</h1>
-    </header>
-
-    <!-- ÁREA PRINCIPAL -->
-    <section class="page">
-      <div class="card">
-        <h3>Total de Produtos</h3>
-        <p>0</p>
-      </div>
-
-      <div class="card">
-        <h3>Pedidos Hoje</h3>
-        <p>0</p>
-      </div>
-    </section>
-
-  </main>
 </div>
 
-<script type="module" src="logout.js"></script>
 </body>
 </html>
-
-
-
