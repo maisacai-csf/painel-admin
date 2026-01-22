@@ -1,39 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin | Dashboard</title>
-  <link rel="stylesheet" href="admin.css">
+  <meta charset="UTF-8" />
+  <title>Painel Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
 
-<header class="header">
-  <h1>Painel Admin</h1>
-  <p>Gerencie seu cardápio</p>
-</header>
+  <!-- BOTÃO MOBILE -->
+  <header class="topbar">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <span>Dashboard</span>
+  </header>
 
-<div class="container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <h2>Admin</h2>
 
-  <div class="card">
-    <h3>Produtos</h3>
-    <p>Gerenciar copos e preços</p>
-    <button>Entrar</button>
-  </div>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Produtos</a>
+      <a>Pedidos</a>
+      <a>Configurações</a>
+    </nav>
 
-  <div class="card">
-    <h3>Acompanhamentos</h3>
-    <p>Adicionar e remover adicionais</p>
-    <button>Entrar</button>
-  </div>
+    <button class="logout">Sair</button>
+  </aside>
 
-  <div class="card">
-    <h3>Pedidos</h3>
-    <p>Visualizar pedidos recebidos</p>
-    <button>Entrar</button>
-  </div>
+  <!-- OVERLAY MOBILE -->
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-</div>
+  <!-- CONTEÚDO -->
+  <main class="content">
+    <div class="container">
+
+      <h1>Dashboard</h1>
+      <p class="subtitle">Resumo geral do seu negócio</p>
+
+      <div class="cards">
+        <div class="card">
+          <span>Vendas hoje</span>
+          <strong>12</strong>
+          <small>Pedidos realizados</small>
+        </div>
+
+        <div class="card">
+          <span>Faturamento</span>
+          <strong>R$ 356,00</strong>
+          <small>Total do dia</small>
+        </div>
+
+        <div class="card">
+          <span>Produtos</span>
+          <strong>7</strong>
+          <small>Itens cadastrados</small>
+        </div>
+
+        <div class="card">
+          <span>Acompanhamentos</span>
+          <strong>15</strong>
+          <small>Adicionais ativos</small>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    }
+  </script>
 
 </body>
 </html>
