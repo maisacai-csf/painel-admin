@@ -13,7 +13,7 @@ btn.addEventListener("click", async () => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.replace("index.html");
+    window.location.replace("login.html");
   } catch (err) {
     error.textContent = "Email ou senha inválidos";
     console.error(err);
