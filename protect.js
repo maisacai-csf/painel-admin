@@ -3,27 +3,35 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/fi
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 onAuthStateChanged(auth, async (user) => {
-  // 1️⃣ não logado
+  console.log("USER AUTH:", user);
+
   if (!user) {
+    alert("Não logado");
     return window.location.href = "index.html";
   }
 
-  // 2️⃣ busca dados do usuário
   const ref = doc(db, "usuarios", user.uid);
+  console.log("BUSCANDO UID:", user.uid);
+
   const snap = await getDoc(ref);
+  console.log("DOC EXISTE?", snap.exists());
 
-  // 3️⃣ não cadastrado ou bloqueado
-  if (!snap.exists() || !snap.data().ativo) {
-    alert("Acesso não autorizado");
+  if (!snap.exists()) {
+    alert("Documento NÃO existe no Firestore");
     return window.location.href = "index.html";
   }
 
-  // 4️⃣ confere cargo
+  console.log("DADOS:", snap.data());
+
+  if (!snap.data().ativo) {
+    alert("Usuário inativo");
+    return window.location.href = "index.html";
+  }
+
   if (snap.data().cargo !== "admin") {
-    alert("Somente administradores");
+    alert("Cargo não é admin");
     return window.location.href = "index.html";
   }
 
-  // ✅ passou por tudo
-  console.log("Admin autenticado");
+  alert("ADMIN AUTORIZADO ✅");
 });
