@@ -7,6 +7,9 @@
 
 body {
   background: #f5f6fa;
+  background: #f5f6fa;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 .app {
@@ -90,45 +93,57 @@ body {
   font-size: 24px;
   font-weight: bold;
 }
-/* 📱 MOBILE */
+/* 📱 MOBILE – estilo cardápio */
 @media (max-width: 768px) {
 
   .app {
     flex-direction: column;
+    max-width: 480px;
+    margin: 0 auto;
   }
 
-  /* SIDEBAR vira topo */
   .sidebar {
     width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    padding: 15px;
+    text-align: center;
   }
 
   .sidebar h2 {
-    margin-bottom: 0;
-    font-size: 16px;
-  }
-
-  .sidebar nav {
-    display: none; /* depois a gente faz menu hamburguer */
-  }
-
-  .sidebar button {
-    margin-top: 0;
-  }
-
-  /* CONTEÚDO */
-  .content {
-    flex: 1;
-  }
-
-  .topbar h1 {
     font-size: 18px;
   }
 
+  .content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .topbar {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .topbar h1 {
+    font-size: 20px;
+  }
+
   .page {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 10px;
   }
 }
+
 
