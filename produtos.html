@@ -10,40 +10,57 @@
 </head>
 <body>
 
+<!-- TOPBAR MOBILE -->
+<header class="topbar">
+  <button class="menu-btn" id="btnMenu">☰</button>
+  <span>Produtos</span>
+</header>
+
 <!-- MENU LATERAL -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <h2>Painel</h2>
 
-  <a href="dashboard.html">Dashboard</a>
-  <a href="produtos.html" class="ativo">Produtos</a>
+  <!-- NAV É OBRIGATÓRIO PRO CSS -->
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="produtos.html" class="active">Produtos</a>
+  </nav>
 
-  <button id="logoutBtn">Sair</button>
+  <!-- BOTÃO SAIR NO FUNDO -->
+  <button id="logoutBtn" class="logout">
+    🚪 Sair
+  </button>
 </aside>
+
+<!-- OVERLAY MOBILE -->
+<div class="overlay" id="overlay"></div>
 
 <!-- CONTEÚDO -->
 <main class="content">
-  <h1>Produtos</h1>
+  <div class="container">
 
-  <!-- ❌ REMOVIDO onclick -->
-  <!-- ✅ AGORA TEM ID -->
-  <button class="btn-primary" id="btnNovoProduto">
-    ➕ Novo Produto
-  </button>
+    <h1>Produtos</h1>
 
-  <table class="tabela">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Preço</th>
-        <th>Status</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
+    <button class="btn-primary" id="btnNovoProduto">
+      ➕ Novo Produto
+    </button>
 
-    <tbody id="listaProdutos">
-      <!-- JS vai preencher -->
-    </tbody>
-  </table>
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody id="listaProdutos">
+        <!-- JS preenche -->
+      </tbody>
+    </table>
+
+  </div>
 </main>
 
 <!-- MODAL -->
@@ -54,15 +71,30 @@
     <input id="nome" placeholder="Nome do produto">
     <input id="preco" type="number" placeholder="Preço">
 
-    <!-- ❌ REMOVIDO onclick -->
-    <!-- ✅ AGORA COM IDs -->
     <button id="btnSalvar">Salvar</button>
     <button class="btn-cancel" id="btnCancelar">Cancelar</button>
   </div>
 </div>
 
-<!-- JS -->
+<!-- JS PRODUTOS -->
 <script type="module" src="produtos.js"></script>
+
+<!-- JS MENU MOBILE -->
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const btnMenu = document.getElementById("btnMenu");
+
+  btnMenu.addEventListener("click", () => {
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+</script>
 
 </body>
 </html>

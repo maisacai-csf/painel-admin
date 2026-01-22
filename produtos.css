@@ -195,3 +195,72 @@ h1 {
     padding: 20px 16px;
   }
 }
+/* ===== AJUSTE DESKTOP ===== */
+@media (min-width: 1024px) {
+
+  /* Sidebar mais elegante */
+  .sidebar {
+    width: 220px;
+  }
+
+  /* Conteúdo centralizado e limitado */
+  .content {
+    margin-left: 220px;
+    padding: 40px;
+    max-width: calc(100% - 220px);
+  }
+
+  /* Limita largura do conteúdo */
+  .content > * {
+    max-width: 1100px;
+  }
+
+  /* Título + botão alinhados */
+  .content h1 {
+    margin-bottom: 10px;
+  }
+
+  .btn-primary {
+    margin-bottom: 25px;
+  }
+
+  /* Tabela mais bonita no PC */
+  .tabela {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .tabela thead th {
+    text-align: left;
+  }
+
+  .tabela tbody tr {
+    background: #fff;
+  }
+}
+.sidebar a {
+  padding: 12px 14px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.sidebar a.ativo {
+  background: #ffffff;
+  color: #5b0a8d;
+  font-weight: bold;
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logout {
+  margin-top: auto;
+}
+
