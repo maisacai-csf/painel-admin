@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login | Admin</title>
-  <link rel="stylesheet" href="css/admin.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-<div class="login-container">
-  <h2>Painel Administrativo</h2>
+  <div class="login-wrapper">
+    <div class="login-box">
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Senha">
-  <button id="loginBtn">Entrar</button>
+      <h1>Painel Admin</h1>
+      <p>Acesse para gerenciar seu negócio</p>
 
-  <p id="error"></p>
-</div>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Senha">
 
-<script type="module" src="auth.js"></script>
+      <button id="loginBtn">Entrar</button>
+
+      <span id="error"></span>
+
+    </div>
+  </div>
+
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
