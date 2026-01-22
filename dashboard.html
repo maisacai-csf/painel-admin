@@ -2,15 +2,54 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard | Admin</title>
+  <title>Painel Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-<h1>Bem-vindo ao Painel Admin</h1>
-
-<p>Login realizado com sucesso!</p>
-<button id="logout">Sair</button>
-<script type="module" src="logout.js"></script>
+<!-- PROTEÇÃO -->
 <script type="module" src="protect.js"></script>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>Açaí ADM</h2>
+
+    <nav>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Produtos</a>
+      <a href="#">Pedidos</a>
+      <a href="#">Acompanhamentos</a>
+    </nav>
+
+    <button id="logout">Sair</button>
+  </aside>
+
+  <!-- CONTEÚDO -->
+  <main class="content">
+
+    <!-- TOPO -->
+    <header class="topbar">
+      <h1>Painel Administrativo</h1>
+    </header>
+
+    <!-- ÁREA PRINCIPAL -->
+    <section class="page">
+      <div class="card">
+        <h3>Total de Produtos</h3>
+        <p>0</p>
+      </div>
+
+      <div class="card">
+        <h3>Pedidos Hoje</h3>
+        <p>0</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script type="module" src="logout.js"></script>
 </body>
 </html>
