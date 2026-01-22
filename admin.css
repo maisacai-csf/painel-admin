@@ -90,3 +90,45 @@ body {
   font-size: 24px;
   font-weight: bold;
 }
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+
+  .app {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR vira topo */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar h2 {
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .sidebar nav {
+    display: none; /* depois a gente faz menu hamburguer */
+  }
+
+  .sidebar button {
+    margin-top: 0;
+  }
+
+  /* CONTEÚDO */
+  .content {
+    flex: 1;
+  }
+
+  .topbar h1 {
+    font-size: 18px;
+  }
+
+  .page {
+    grid-template-columns: 1fr;
+  }
+}
+
