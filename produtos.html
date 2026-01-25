@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Produtos | Admin</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="produtos.css">
 </head>
 <body>
@@ -16,20 +15,18 @@
   <span>Produtos</span>
 </header>
 
-<!-- MENU LATERAL -->
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <h2>Painel</h2>
+  <h2>Admin</h2>
 
-  <!-- NAV É OBRIGATÓRIO PRO CSS -->
   <nav>
     <a href="dashboard.html">Dashboard</a>
     <a href="produtos.html" class="active">Produtos</a>
+    <a href="pedidos.html">Pedidos</a>
+    <a href="config.html">Configurações</a>
   </nav>
 
-  <!-- BOTÃO SAIR NO FUNDO -->
-  <button id="logoutBtn" class="logout">
-    🚪 Sair
-  </button>
+  <button class="logout" id="logoutBtn">Sair</button>
 </aside>
 
 <!-- OVERLAY MOBILE -->
@@ -56,14 +53,13 @@
       </thead>
 
       <tbody id="listaProdutos">
-        <!-- JS preenche -->
       </tbody>
     </table>
 
   </div>
 </main>
 
-<!-- MODAL -->
+<!-- MODAL NOVO PRODUTO -->
 <div class="modal" id="modal">
   <div class="modal-box">
     <h2>Novo Produto</h2>
@@ -71,15 +67,27 @@
     <input id="nome" placeholder="Nome do produto">
     <input id="preco" type="number" placeholder="Preço">
 
+    <!-- 🔥 NOVO -->
+    <label>Tipo do produto:</label>
+    <select id="tipoProduto">
+      <option value="simples">Produto simples (só botão adicionar)</option>
+      <option value="complementos">Produto com acompanhamentos</option>
+    </select>
+
+    <div id="areaComplementos" style="display:none;">
+      <label>Limite de acompanhamentos:</label>
+      <input id="limiteComp" type="number" placeholder="Ex: 3">
+    </div>
+
     <button id="btnSalvar">Salvar</button>
     <button class="btn-cancel" id="btnCancelar">Cancelar</button>
   </div>
 </div>
 
-<!-- JS PRODUTOS -->
+<!-- JS -->
 <script type="module" src="produtos.js"></script>
 
-<!-- JS MENU MOBILE -->
+<!-- MENU MOBILE -->
 <script>
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("overlay");

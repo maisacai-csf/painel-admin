@@ -6,6 +6,12 @@ import {
   updateDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const tipoSelect = document.getElementById("tipoProduto");
+const areaComp = document.getElementById("areaComplementos");
+
+tipoSelect.addEventListener("change", () => {
+  areaComp.style.display = tipoSelect.value === "complementos" ? "block" : "none";
+});
 
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
@@ -26,6 +32,8 @@ document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 async function salvarProduto() {
   const nome = document.getElementById("nome").value;
   const preco = Number(document.getElementById("preco").value);
+  const tipo = document.getElementById("tipoProduto").value;
+  const limite = Number(document.getElementById("limiteComp").value) || 0;
 
   if (!nome || !preco) {
     alert("Preencha todos os campos");
@@ -35,12 +43,15 @@ async function salvarProduto() {
   await addDoc(collection(db, "produtos"), {
     nome,
     preco,
-    ativo: true
+    ativo: true,
+    tipo,
+    limite
   });
 
   modal.style.display = "none";
   carregarProdutos();
 }
+
 
 // LISTAR PRODUTOS
 async function carregarProdutos() {
@@ -81,4 +92,17 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
   window.location.href = "login.html";
 });
 
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const btnMenu = document.getElementById("btnMenu");
+
+  btnMenu.addEventListener("click", () => {
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
 carregarProdutos();
