@@ -65,24 +65,23 @@
     <h2>Novo Produto</h2>
 
     <input id="nome" placeholder="Nome do produto">
+    <input id="descricao" placeholder="Descrição do produto">
     <input id="preco" type="number" placeholder="Preço">
+    <input id="imagem" placeholder="URL da imagem do produto">
 
-    <!-- 🔥 NOVO -->
-    <label>Tipo do produto:</label>
-    <select id="tipoProduto">
-      <option value="simples">Produto simples (só botão adicionar)</option>
-      <option value="complementos">Produto com acompanhamentos</option>
-    </select>
+    <label style="font-size:14px;">
+      <input type="checkbox" id="temAcompanhamentos">
+      Esse produto tem acompanhamentos
+    </label>
 
-    <div id="areaComplementos" style="display:none;">
-      <label>Limite de acompanhamentos:</label>
-      <input id="limiteComp" type="number" placeholder="Ex: 3">
-    </div>
+    <textarea id="listaAcompanhamentos" placeholder="Digite os acompanhamentos separados por vírgula
+Ex: Granola, Leite em pó, Banana"></textarea>
 
     <button id="btnSalvar">Salvar</button>
     <button class="btn-cancel" id="btnCancelar">Cancelar</button>
   </div>
 </div>
+
 
 <!-- JS -->
 <script type="module" src="produtos.js"></script>

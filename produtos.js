@@ -31,27 +31,34 @@ document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 // SALVAR PRODUTO
 async function salvarProduto() {
   const nome = document.getElementById("nome").value;
+  const descricao = document.getElementById("descricao").value;
   const preco = Number(document.getElementById("preco").value);
-  const tipo = document.getElementById("tipoProduto").value;
-  const limite = Number(document.getElementById("limiteComp").value) || 0;
+  const imagem = document.getElementById("imagem").value;
+  const temAcompanhamentos = document.getElementById("temAcompanhamentos").checked;
+  const listaTexto = document.getElementById("listaAcompanhamentos").value;
 
   if (!nome || !preco) {
-    alert("Preencha todos os campos");
+    alert("Preencha nome e preço");
     return;
   }
 
+  const acompanhamentos = temAcompanhamentos
+    ? listaTexto.split(",").map(a => a.trim()).filter(a => a)
+    : [];
+
   await addDoc(collection(db, "produtos"), {
     nome,
+    descricao,
     preco,
+    imagem,
     ativo: true,
-    tipo,
-    limite
+    temAcompanhamentos,
+    acompanhamentos
   });
 
   modal.style.display = "none";
   carregarProdutos();
 }
-
 
 // LISTAR PRODUTOS
 async function carregarProdutos() {
