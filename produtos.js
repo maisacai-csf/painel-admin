@@ -81,21 +81,23 @@ async function carregarProdutos() {
   snap.forEach(d => {
     const p = d.data();
 
-lista.innerHTML += `
-  <tr>
-    <td>${p.nome}</td>
-    <td>R$ ${p.preco}</td>
-    <td>${p.ativo ? "Ativo" : "Inativo"}</td>
-    <td>
-      <button class="btnEditar" data-id="${d.id}">Editar</button>
-      <button class="btnAtivar" data-id="${d.id}" data-ativo="${p.ativo}">
-        ${p.ativo ? "Desativar" : "Ativar"}
-      </button>
-      <button class="btnExcluir" data-id="${d.id}">Excluir</button>
-    </td>
-  </tr>
-`;
+    html += `
+      <tr>
+        <td>${p.nome}</td>
+        <td>R$ ${p.preco}</td>
+        <td>${p.ativo ? "Ativo" : "Inativo"}</td>
+        <td>
+          <button class="btnEditar" data-id="${d.id}">Editar</button>
+          <button class="btnAtivar" data-id="${d.id}" data-ativo="${p.ativo}">
+            ${p.ativo ? "Desativar" : "Ativar"}
+          </button>
+          <button class="btnExcluir" data-id="${d.id}">Excluir</button>
+        </td>
+      </tr>
+    `;
   });
+
+  lista.innerHTML = html; // 🔥 substitui tudo de uma vez
 document.addEventListener("click", async (e) => {
 
   // BOTÃO EDITAR
