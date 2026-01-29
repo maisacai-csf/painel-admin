@@ -5,6 +5,7 @@ import {
   addDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -90,10 +91,10 @@ lista.innerHTML += `
       <button class="btnAtivar" data-id="${d.id}" data-ativo="${p.ativo}">
         ${p.ativo ? "Desativar" : "Ativar"}
       </button>
+      <button class="btnExcluir" data-id="${d.id}">Excluir</button>
     </td>
   </tr>
 `;
-
   });
 document.addEventListener("click", async (e) => {
 
@@ -142,6 +143,20 @@ document.addEventListener("click", async (e) => {
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "login.html";
+});
+document.addEventListener("click", async (e) => {
+
+  // EXCLUIR PRODUTO
+  if (e.target.classList.contains("btnExcluir")) {
+    const id = e.target.dataset.id;
+
+    const confirmar = confirm("Tem certeza que deseja excluir este produto?");
+    if (!confirmar) return;
+
+    await deleteDoc(doc(db, "produtos", id));
+    carregarProdutos();
+  }
+
 });
 
 carregarProdutos();
