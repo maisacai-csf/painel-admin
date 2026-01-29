@@ -1,4 +1,3 @@
-let produtoEditando = null;
 import { db, auth } from "./firebase.js";
 import {
   collection,
@@ -10,9 +9,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+let produtoEditando = null;
+
 const lista = document.getElementById("listaProdutos");
 const modal = document.getElementById("modal");
 
+// CAMPOS DO FORM
+const nome = document.getElementById("nome");
+const descricao = document.getElementById("descricao");
+const preco = document.getElementById("preco");
+const imagem = document.getElementById("imagem");
+const temAcompanhamentos = document.getElementById("temAcompanhamentos");
+const listaAcompanhamentos = document.getElementById("listaAcompanhamentos");
+
+
+// =============================
+// ABRIR MODAL NOVO PRODUTO
+// =============================
 document.getElementById("btnNovoProduto").addEventListener("click", () => {
   produtoEditando = null;
 
@@ -26,46 +39,36 @@ document.getElementById("btnNovoProduto").addEventListener("click", () => {
   modal.style.display = "flex";
 });
 
-
+// CANCELAR MODAL
 document.getElementById("btnCancelar").addEventListener("click", () => {
   modal.style.display = "none";
 });
 
+// SALVAR PRODUTO (NOVO OU EDIÇÃO)
 document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 
 async function salvarProduto() {
-  const nome = document.getElementById("nome").value;
-  const descricao = document.getElementById("descricao").value;
-  const preco = Number(document.getElementById("preco").value);
-  const imagem = document.getElementById("imagem").value;
-  const temAcompanhamentos = document.getElementById("temAcompanhamentos").checked;
-  const listaTexto = document.getElementById("listaAcompanhamentos").value;
+  const dadosProduto = {
+    nome: nome.value,
+    descricao: descricao.value,
+    preco: Number(preco.value),
+    imagem: imagem.value,
+    ativo: true,
+    temAcompanhamentos: temAcompanhamentos.checked,
+    acompanhamentos: temAcompanhamentos.checked
+      ? listaAcompanhamentos.value.split(",").map(a => a.trim()).filter(a => a)
+      : []
+  };
 
-  if (!nome || !preco) {
+  if (!dadosProduto.nome || !dadosProduto.preco) {
     alert("Preencha nome e preço");
     return;
   }
 
-  const acompanhamentos = temAcompanhamentos
-    ? listaTexto.split(",").map(a => a.trim()).filter(a => a)
-    : [];
-
-  const dadosProduto = {
-    nome,
-    descricao,
-    preco,
-    imagem,
-    ativo: true,
-    temAcompanhamentos,
-    acompanhamentos
-  };
-
   if (produtoEditando) {
-    // 🔁 ATUALIZA PRODUTO
     await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
     produtoEditando = null;
   } else {
-    // ➕ NOVO PRODUTO
     await addDoc(collection(db, "produtos"), dadosProduto);
   }
 
@@ -74,9 +77,12 @@ async function salvarProduto() {
 }
 
 
+// =============================
+// LISTAR PRODUTOS
+// =============================
 async function carregarProdutos() {
-  lista.innerHTML = "";
   const snap = await getDocs(collection(db, "produtos"));
+  let html = "";
 
   snap.forEach(d => {
     const p = d.data();
@@ -84,7 +90,7 @@ async function carregarProdutos() {
     html += `
       <tr>
         <td>${p.nome}</td>
-        <td>R$ ${p.preco}</td>
+        <td>R$ ${p.preco.toFixed(2)}</td>
         <td>${p.ativo ? "Ativo" : "Inativo"}</td>
         <td>
           <button class="btnEditar" data-id="${d.id}">Editar</button>
@@ -97,10 +103,16 @@ async function carregarProdutos() {
     `;
   });
 
-  lista.innerHTML = html; // 🔥 substitui tudo de uma vez
+  lista.innerHTML = html;
+}
+
+
+// =============================
+// AÇÕES DOS BOTÕES (EDITAR / ATIVAR / EXCLUIR)
+// =============================
 document.addEventListener("click", async (e) => {
 
-  // BOTÃO EDITAR
+  // EDITAR
   if (e.target.classList.contains("btnEditar")) {
     const id = e.target.dataset.id;
     produtoEditando = id;
@@ -115,7 +127,6 @@ document.addEventListener("click", async (e) => {
         preco.value = p.preco;
         imagem.value = p.imagem || "";
         temAcompanhamentos.checked = p.temAcompanhamentos;
-
         listaAcompanhamentos.value = p.acompanhamentos?.join(", ") || "";
 
         modal.style.display = "flex";
@@ -123,35 +134,17 @@ document.addEventListener("click", async (e) => {
     });
   }
 
-  // BOTÃO ATIVAR / DESATIVAR
+  // ATIVAR / DESATIVAR
   if (e.target.classList.contains("btnAtivar")) {
     await updateDoc(doc(db, "produtos", e.target.dataset.id), {
       ativo: e.target.dataset.ativo !== "true"
     });
     carregarProdutos();
   }
-});
 
-  document.querySelectorAll("button[data-id]").forEach(btn => {
-    btn.onclick = async () => {
-      await updateDoc(doc(db, "produtos", btn.dataset.id), {
-        ativo: btn.dataset.ativo !== "true"
-      });
-      carregarProdutos();
-    };
-  });
-}
-
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.href = "login.html";
-});
-document.addEventListener("click", async (e) => {
-
-  // EXCLUIR PRODUTO
+  // EXCLUIR
   if (e.target.classList.contains("btnExcluir")) {
     const id = e.target.dataset.id;
-
     const confirmar = confirm("Tem certeza que deseja excluir este produto?");
     if (!confirmar) return;
 
@@ -161,4 +154,15 @@ document.addEventListener("click", async (e) => {
 
 });
 
+
+// =============================
+// LOGOUT
+// =============================
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+});
+
+
+// INICIAR LISTA
 carregarProdutos();
