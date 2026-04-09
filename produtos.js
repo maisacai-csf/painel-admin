@@ -44,35 +44,47 @@ document.getElementById("btnCancelar").addEventListener("click", () => {
   modal.style.display = "none";
 });
 
-// SALVAR PRODUTO (NOVO OU EDIÇÃO)
+// SALVAR PRODUTO
 document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 
-if (!nome.value || !preco.value) {
-  alert("Preencha nome e preço");
-  return;
-}
+async function salvarProduto() {
 
-const dadosProduto = {
-  nome: nome.value,
-  descricao: descricao.value,
-  preco: Number(preco.value),
-  imagem: imagem.value || "https://via.placeholder.com/150",
-  ativo: true,
-  temAcompanhamentos: temAcompanhamentos.checked,
-  acompanhamentos: temAcompanhamentos.checked
-    ? listaAcompanhamentos.value.split(",").map(a => a.trim()).filter(a => a)
-    : []
-};
-
-  if (produtoEditando) {
-    await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
-    produtoEditando = null;
-  } else {
-    await addDoc(collection(db, "produtos"), dadosProduto);
+  if (!nome.value || !preco.value) {
+    alert("Preencha nome e preço");
+    return;
   }
 
-  modal.style.display = "none";
-  carregarProdutos();
+  const dadosProduto = {
+    nome: nome.value,
+    descricao: descricao.value,
+    preco: Number(preco.value),
+    imagem: imagem.value || "https://via.placeholder.com/150",
+    ativo: true,
+    temAcompanhamentos: temAcompanhamentos.checked,
+    acompanhamentos: temAcompanhamentos.checked
+      ? listaAcompanhamentos.value
+          .split(",")
+          .map(a => a.trim())
+          .filter(a => a)
+      : []
+  };
+
+  try {
+    if (produtoEditando) {
+      await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
+      produtoEditando = null;
+    } else {
+      await addDoc(collection(db, "produtos"), dadosProduto);
+    }
+
+    modal.style.display = "none";
+    carregarProdutos();
+
+  } catch (err) {
+    console.error("Erro ao salvar:", err);
+    alert("Erro ao salvar produto");
+  }
+}
 
 
 // =============================
@@ -88,7 +100,7 @@ async function carregarProdutos() {
     html += `
       <tr>
         <td>${p.nome}</td>
-        <td>R$ ${p.preco.toFixed(2)}</td>
+        <td>R$ ${Number(p.preco || 0).toFixed(2)}</td>
         <td>${p.ativo ? "Ativo" : "Inativo"}</td>
         <td>
           <button class="btnEditar" data-id="${d.id}">Editar</button>
@@ -106,7 +118,7 @@ async function carregarProdutos() {
 
 
 // =============================
-// AÇÕES DOS BOTÕES (EDITAR / ATIVAR / EXCLUIR)
+// AÇÕES DOS BOTÕES
 // =============================
 document.addEventListener("click", async (e) => {
 
@@ -162,5 +174,5 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
 });
 
 
-// INICIAR LISTA
+// INICIAR
 carregarProdutos();
