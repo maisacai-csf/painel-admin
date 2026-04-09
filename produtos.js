@@ -47,23 +47,22 @@ document.getElementById("btnCancelar").addEventListener("click", () => {
 // SALVAR PRODUTO (NOVO OU EDIÇÃO)
 document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 
-async function salvarProduto() {
-  const dadosProduto = {
-    nome: nome.value,
-    descricao: descricao.value,
-    preco: Number(preco.value),
-    imagem: imagem.value,
-    ativo: true,
-    temAcompanhamentos: temAcompanhamentos.checked,
-    acompanhamentos: temAcompanhamentos.checked
-      ? listaAcompanhamentos.value.split(",").map(a => a.trim()).filter(a => a)
-      : []
-  };
+if (!nome.value || !preco.value) {
+  alert("Preencha nome e preço");
+  return;
+}
 
-  if (!dadosProduto.nome || !dadosProduto.preco) {
-    alert("Preencha nome e preço");
-    return;
-  }
+const dadosProduto = {
+  nome: nome.value,
+  descricao: descricao.value,
+  preco: Number(preco.value),
+  imagem: imagem.value || "https://via.placeholder.com/150",
+  ativo: true,
+  temAcompanhamentos: temAcompanhamentos.checked,
+  acompanhamentos: temAcompanhamentos.checked
+    ? listaAcompanhamentos.value.split(",").map(a => a.trim()).filter(a => a)
+    : []
+};
 
   if (produtoEditando) {
     await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
@@ -74,7 +73,6 @@ async function salvarProduto() {
 
   modal.style.display = "none";
   carregarProdutos();
-}
 
 
 // =============================
