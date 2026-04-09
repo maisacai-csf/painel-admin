@@ -14,37 +14,55 @@ let produtoEditando = null;
 const lista = document.getElementById("listaProdutos");
 const modal = document.getElementById("modal");
 
-// CAMPOS DO FORM
+// CAMPOS
 const nome = document.getElementById("nome");
 const descricao = document.getElementById("descricao");
 const preco = document.getElementById("preco");
 const imagem = document.getElementById("imagem");
-const temAcompanhamentos = document.getElementById("temAcompanhamentos");
-const listaAcompanhamentos = document.getElementById("listaAcompanhamentos");
+
+// 🔥 NOVO
+const listaAdicionais = document.getElementById("listaAdicionais");
 
 
 // =============================
-// ABRIR MODAL NOVO PRODUTO
+// ABRIR MODAL
 // =============================
-document.getElementById("btnNovoProduto").addEventListener("click", () => {
+document.getElementById("btnNovoProduto").addEventListener("click", async () => {
   produtoEditando = null;
 
   nome.value = "";
   descricao.value = "";
   preco.value = "";
   imagem.value = "";
-  temAcompanhamentos.checked = false;
-  listaAcompanhamentos.value = "";
+
+  // 🔥 limpa adicionais
+  listaAdicionais.innerHTML = "";
+
+  // 🔥 CARREGA ADICIONAIS
+  const snap = await getDocs(collection(db, "adicionais"));
+
+  snap.forEach(docSnap => {
+    const a = docSnap.data();
+
+    listaAdicionais.innerHTML += `
+      <label>
+        <input type="checkbox" value="${docSnap.id}">
+        ${a.nome} - R$ ${a.preco}
+      </label><br>
+    `;
+  });
 
   modal.style.display = "flex";
 });
 
-// CANCELAR MODAL
+// CANCELAR
 document.getElementById("btnCancelar").addEventListener("click", () => {
   modal.style.display = "none";
 });
 
+// =============================
 // SALVAR PRODUTO
+// =============================
 document.getElementById("btnSalvar").addEventListener("click", salvarProduto);
 
 async function salvarProduto() {
@@ -53,6 +71,39 @@ async function salvarProduto() {
     alert("Preencha nome e preço");
     return;
   }
+  async function salvarProduto() {
+
+    if (!nome.value || !preco.value) {
+      alert("Preencha nome e preço");
+      return;
+    }
+
+    const selecionados = [
+      ...document.querySelectorAll("#listaAdicionais input:checked")
+    ].map(el => el.value);
+
+    const dadosProduto = {
+      nome: nome.value,
+      descricao: descricao.value,
+      preco: Number(preco.value),
+      imagem: imagem.value || "https://via.placeholder.com/150",
+      ativo: true,
+      adicionais: selecionados // 🔥 AQUI
+    };
+
+    if (produtoEditando) {
+      await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
+    } else {
+      await addDoc(collection(db, "produtos"), dadosProduto);
+    }
+
+    modal.style.display = "none";
+    carregarProdutos();
+  }
+  // 🔥 PEGA ADICIONAIS MARCADOS
+  const adicionaisSelecionados = [
+    ...document.querySelectorAll("#listaAdicionais input:checked")
+  ].map(el => el.value);
 
   const dadosProduto = {
     nome: nome.value,
@@ -60,13 +111,7 @@ async function salvarProduto() {
     preco: Number(preco.value),
     imagem: imagem.value || "https://via.placeholder.com/150",
     ativo: true,
-    temAcompanhamentos: temAcompanhamentos.checked,
-    acompanhamentos: temAcompanhamentos.checked
-      ? listaAcompanhamentos.value
-          .split(",")
-          .map(a => a.trim())
-          .filter(a => a)
-      : []
+    adicionais: adicionaisSelecionados // 🔥 AQUI
   };
 
   try {
@@ -118,7 +163,7 @@ async function carregarProdutos() {
 
 
 // =============================
-// AÇÕES DOS BOTÕES
+// AÇÕES
 // =============================
 document.addEventListener("click", async (e) => {
 
@@ -136,15 +181,13 @@ document.addEventListener("click", async (e) => {
         descricao.value = p.descricao;
         preco.value = p.preco;
         imagem.value = p.imagem || "";
-        temAcompanhamentos.checked = p.temAcompanhamentos;
-        listaAcompanhamentos.value = p.acompanhamentos?.join(", ") || "";
 
         modal.style.display = "flex";
       }
     });
   }
 
-  // ATIVAR / DESATIVAR
+  // ATIVAR
   if (e.target.classList.contains("btnAtivar")) {
     await updateDoc(doc(db, "produtos", e.target.dataset.id), {
       ativo: e.target.dataset.ativo !== "true"
@@ -155,7 +198,7 @@ document.addEventListener("click", async (e) => {
   // EXCLUIR
   if (e.target.classList.contains("btnExcluir")) {
     const id = e.target.dataset.id;
-    const confirmar = confirm("Tem certeza que deseja excluir este produto?");
+    const confirmar = confirm("Tem certeza que deseja excluir?");
     if (!confirmar) return;
 
     await deleteDoc(doc(db, "produtos", id));
@@ -165,14 +208,11 @@ document.addEventListener("click", async (e) => {
 });
 
 
-// =============================
 // LOGOUT
-// =============================
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "login.html";
 });
-
 
 // INICIAR
 carregarProdutos();
