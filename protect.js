@@ -1,7 +1,7 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+console.log(user.uid);
 onAuthStateChanged(auth, async (user) => {
   // 1️⃣ não logado
   if (!user) {
@@ -23,7 +23,6 @@ onAuthStateChanged(auth, async (user) => {
     alert("Somente administradores");
     return window.location.href = "login.html";
   }
-
   // ✅ passou por tudo
   console.log("Admin autenticado");
 });
