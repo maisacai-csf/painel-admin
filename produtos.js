@@ -89,7 +89,8 @@ async function salvarProduto() {
     preco: Number(preco.value),
     imagem: imagem.value || "https://via.placeholder.com/150",
     ativo: true,
-    adicionais: selecionados
+    adicionais: selecionados,
+    temAdicionais: selecionados.length > 0
   };
 
   try {
