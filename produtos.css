@@ -264,3 +264,24 @@ h1 {
   margin-top: auto;
 }
 
+.box-adicionais {
+  margin-top: 10px;
+}
+
+.topo-adicionais {
+  background: #eee;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.conteudo-adicionais {
+  margin-top: 5px;
+  padding: 10px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+}

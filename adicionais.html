@@ -6,8 +6,30 @@
     <title>Document</title>
 </head>
 <body>
-    <input id="nomeAdicional" placeholder="Nome">
-    <input id="precoAdicional" type="number" placeholder="Preço">
+<h1>Acompanhamentos</h1>
 
-    <button id="btnSalvarAdicional">Salvar</button>
+<button id="btnNovoAdicional">+ Novo</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Preço</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody id="listaAdicionais"></tbody>
+</table>
+
+<!-- MODAL -->
+<div id="modalAdicional" style="display:none;">
+  <input id="nomeAdicional" placeholder="Nome">
+  <input id="precoAdicional" type="number" placeholder="Preço">
+
+  <button id="btnSalvarAdicional">Salvar</button>
+  <button id="btnCancelarAdicional">Cancelar</button>
+</div>
+
+<script type="module" src="adicionais.js"></script>
 </body>

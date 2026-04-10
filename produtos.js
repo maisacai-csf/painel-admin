@@ -20,9 +20,15 @@ const descricao = document.getElementById("descricao");
 const preco = document.getElementById("preco");
 const imagem = document.getElementById("imagem");
 
-// 🔥 NOVO
+// ADICIONAIS
 const listaAdicionais = document.getElementById("listaAdicionais");
+const toggle = document.getElementById("toggleAdicionais");
 
+// 🔽 ABRIR / FECHAR DROPDOWN
+toggle.addEventListener("click", () => {
+  listaAdicionais.style.display =
+    listaAdicionais.style.display === "none" ? "block" : "none";
+});
 
 // =============================
 // ABRIR MODAL
@@ -35,7 +41,6 @@ document.getElementById("btnNovoProduto").addEventListener("click", async () => 
   preco.value = "";
   imagem.value = "";
 
-  // 🔥 limpa adicionais
   listaAdicionais.innerHTML = "";
 
   // 🔥 CARREGA ADICIONAIS
@@ -44,11 +49,13 @@ document.getElementById("btnNovoProduto").addEventListener("click", async () => 
   snap.forEach(docSnap => {
     const a = docSnap.data();
 
+    if (!a.ativo) return;
+
     listaAdicionais.innerHTML += `
-      <label>
+      <label style="display:block; margin-bottom:5px;">
         <input type="checkbox" value="${docSnap.id}">
-        ${a.nome} - R$ ${a.preco}
-      </label><br>
+        ${a.nome} - R$ ${Number(a.preco).toFixed(2)}
+      </label>
     `;
   });
 
@@ -71,37 +78,8 @@ async function salvarProduto() {
     alert("Preencha nome e preço");
     return;
   }
-  async function salvarProduto() {
 
-    if (!nome.value || !preco.value) {
-      alert("Preencha nome e preço");
-      return;
-    }
-
-    const selecionados = [
-      ...document.querySelectorAll("#listaAdicionais input:checked")
-    ].map(el => el.value);
-
-    const dadosProduto = {
-      nome: nome.value,
-      descricao: descricao.value,
-      preco: Number(preco.value),
-      imagem: imagem.value || "https://via.placeholder.com/150",
-      ativo: true,
-      adicionais: selecionados // 🔥 AQUI
-    };
-
-    if (produtoEditando) {
-      await updateDoc(doc(db, "produtos", produtoEditando), dadosProduto);
-    } else {
-      await addDoc(collection(db, "produtos"), dadosProduto);
-    }
-
-    modal.style.display = "none";
-    carregarProdutos();
-  }
-  // 🔥 PEGA ADICIONAIS MARCADOS
-  const adicionaisSelecionados = [
+  const selecionados = [
     ...document.querySelectorAll("#listaAdicionais input:checked")
   ].map(el => el.value);
 
@@ -111,7 +89,7 @@ async function salvarProduto() {
     preco: Number(preco.value),
     imagem: imagem.value || "https://via.placeholder.com/150",
     ativo: true,
-    adicionais: adicionaisSelecionados // 🔥 AQUI
+    adicionais: selecionados
   };
 
   try {
@@ -130,7 +108,6 @@ async function salvarProduto() {
     alert("Erro ao salvar produto");
   }
 }
-
 
 // =============================
 // LISTAR PRODUTOS
@@ -161,7 +138,6 @@ async function carregarProdutos() {
   lista.innerHTML = html;
 }
 
-
 // =============================
 // AÇÕES
 // =============================
@@ -173,6 +149,7 @@ document.addEventListener("click", async (e) => {
     produtoEditando = id;
 
     const snap = await getDocs(collection(db, "produtos"));
+
     snap.forEach(docSnap => {
       if (docSnap.id === id) {
         const p = docSnap.data();
@@ -187,7 +164,7 @@ document.addEventListener("click", async (e) => {
     });
   }
 
-  // ATIVAR
+  // ATIVAR / DESATIVAR
   if (e.target.classList.contains("btnAtivar")) {
     await updateDoc(doc(db, "produtos", e.target.dataset.id), {
       ativo: e.target.dataset.ativo !== "true"
@@ -207,8 +184,9 @@ document.addEventListener("click", async (e) => {
 
 });
 
-
+// =============================
 // LOGOUT
+// =============================
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "login.html";
